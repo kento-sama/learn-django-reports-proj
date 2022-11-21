@@ -4,6 +4,7 @@ from customers.models import Customer
 from profiles.models import Profile
 from django.utils import timezone
 from .utils import generate_code
+from django.shortcuts import reverse
 
 # Create your models here.
 
@@ -28,6 +29,10 @@ class Sale(models.Model):
     salesman = models.ForeignKey(Profile, on_delete=models.CASCADE)
     created = models.DateTimeField(blank=True)
     updated = models.DateTimeField(auto_now=True)
+    
+    def get_absolute_url(self):
+        return reverse("sales:detail", kwargs={"pk": self.pk})
+    
     
     def save(self, *args, **kwargs):
         if self.transaction_id == "":
